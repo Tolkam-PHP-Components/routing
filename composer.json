@@ -1,0 +1,33 @@
+{
+    "name": "tolkam/routing",
+    "description": "PSR-15 routing and dispatching based on Aura.Router",
+    "type": "library",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Tolkam\\Routing\\": "src"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "ext-mbstring": "*",
+        "psr/http-message": "~1.0",
+        "psr/http-server-handler": "~1.0",
+        "psr/http-server-middleware": "~1.0",
+        "psr/event-dispatcher": "^1.0",
+        "psr/container": "~1.0",
+        "aura/router": "^3.1",
+        "tolkam/psr15-dispatcher": "^1.0@dev"
+    },
+    "suggest": {
+        "tolkam/routing-twig": "Twig integration",
+        "tolkam/routing-invokable-handler": "Support for route handlers invokable by php-di/invoker"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
