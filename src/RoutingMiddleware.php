@@ -302,13 +302,9 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
                         $request->getHeaderLine('Accept')
                     ));
                     break;
-                case 'Aura\Router\Rule\Host':
-                case 'Aura\Router\Rule\Path':
-                    throw new Exception\NotFoundException(sprintf('No route found for "%s"', $uri));
-                    break;
             }
             
-            throw new Exception('Internal error');
+            throw new Exception\NotFoundException(sprintf('No matching rule found for "%s"', $uri));
         }
         
         /** @var Route $route */
