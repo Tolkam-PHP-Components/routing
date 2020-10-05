@@ -36,6 +36,8 @@ namespace Tolkam\Routing;
  * @method Route tokens(array $tokens)
  *
  * @method Route wildcard(string $wildcard)
+ *
+ * @method Route middlewares(array $middlewares)
  */
 class Map extends \Aura\Router\Map
 {

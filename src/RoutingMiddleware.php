@@ -143,9 +143,12 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
         $this->matchedRoute = $this->match($request);
         $matchedRouteName = $this->matchedRoute->name;
         
+        // add route to request
+        $request = $request->withAttribute(Route::class, $this->matchedRoute);
+        
         // resolve individual route middlewares
         $routeMiddlewares = $this->resolveMiddlewares(
-            $this->matchedRoute->extras['middlewares'] ?? [],
+            $this->matchedRoute->middlewares ?: $this->matchedRoute->extras['middlewares'] ?? [],
             $matchedRouteName
         );
         
@@ -198,7 +201,10 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     {
         $resolved = [];
         foreach ($values as $value) {
-            $middleware = $this->resolveMiddleware($value, $routeName);
+            $middleware = $value;
+            if (!$middleware instanceof MiddlewareInterface) {
+                $middleware = $this->resolveMiddleware($value, $routeName);
+            }
             $middleware = !is_array($middleware) ? [$middleware] : $middleware;
             
             foreach ($middleware as $item) {
