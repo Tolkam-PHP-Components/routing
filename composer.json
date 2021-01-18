@@ -22,8 +22,9 @@
         "tolkam/psr15-dispatcher": "^1.0@dev"
     },
     "suggest": {
-        "tolkam/routing-twig": "Twig integration",
-        "tolkam/routing-invokable-handler": "Support for route handlers invokable by php-di/invoker"
+        "tolkam/routing-utils": "Useful utils for easier routes manipulation",
+        "tolkam/routing-invokable-handler": "Support for route handlers invokable by php-di/invoker",
+        "tolkam/routing-twig": "Twig integration"
     },
     "extra": {
         "branch-alias": {
