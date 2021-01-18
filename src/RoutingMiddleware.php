@@ -10,8 +10,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Tolkam\PSR15\Dispatcher\Dispatcher;
 use Tolkam\Routing\Event\BeforeRouteEvent;
 use Tolkam\Routing\Resolver\ResolverInterface;
-use Tolkam\Routing\Runner\Handler\HandlerRunnerException;
-use Tolkam\Routing\Runner\Handler\HandlerRunnerInterface;
+use Tolkam\Routing\Runner\HandlerRunnerException;
+use Tolkam\Routing\Runner\HandlerRunnerInterface;
 use Tolkam\Routing\Traits\AssertionsTrait;
 
 class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
@@ -34,7 +34,7 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     protected array $handlerResolvers = [];
     
     /**
-     * @var HandlerRunnerInterface[]
+     * @var \Tolkam\Routing\Runner\HandlerRunnerInterface[]
      */
     protected array $handlerRunners = [];
     
@@ -87,7 +87,7 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     /**
      * Adds handler runner
      *
-     * @param HandlerRunnerInterface $runner
+     * @param \Tolkam\Routing\Runner\HandlerRunnerInterface $runner
      *
      * @return self
      */
@@ -300,14 +300,12 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
                     ));
                     $e->setAllowed($failed->allows);
                     throw $e;
-                    break;
                 case 'Aura\Router\Rule\Accepts':
                     throw new Exception\NotAcceptedException(sprintf(
                         '"%s" is not able to respond with the accepted content type "%s"',
                         $uri,
                         $request->getHeaderLine('Accept')
                     ));
-                    break;
             }
             
             throw new Exception\NotFoundException(sprintf('No matching rule found for "%s"', $uri));

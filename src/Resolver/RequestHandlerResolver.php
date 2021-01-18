@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Tolkam\Routing\Resolver\Handler;
+namespace Tolkam\Routing\Resolver;
 
 use Psr\Http\Server\RequestHandlerInterface;
-use Tolkam\Routing\Resolver\ResolverInterface;
 
 class RequestHandlerResolver implements ResolverInterface
 {

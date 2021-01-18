@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tolkam\Routing\Runner\Handler;
+namespace Tolkam\Routing\Runner;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,7 +18,7 @@ class RequestHandlerRunner implements HandlerRunnerInterface
      */
     public function process(
         ServerRequestInterface $request,
-        RequestHandlerInterface $requestHandler
+        RequestHandlerInterface $handler
     ): ResponseInterface {
         
         if ($this->routeHandler instanceof RequestHandlerInterface) {
@@ -28,6 +28,6 @@ class RequestHandlerRunner implements HandlerRunnerInterface
             return $response;
         }
         
-        return $requestHandler->handle($request);
+        return $handler->handle($request);
     }
 }

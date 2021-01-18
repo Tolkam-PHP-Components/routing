@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tolkam\Routing\Runner\Handler;
+namespace Tolkam\Routing\Runner;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,16 +18,28 @@ class CallableRunner implements HandlerRunnerInterface
      */
     public function process(
         ServerRequestInterface $request,
-        RequestHandlerInterface $requestHandler
+        RequestHandlerInterface $handler
     ): ResponseInterface {
+        $arrayCallable = is_array($this->routeHandler);
         
-        if (is_callable($this->routeHandler)) {
-            $response = call_user_func($this->routeHandler, $request);
+        if ($arrayCallable) {
+            [$class, $method] = $this->routeHandler;
+            $isCallable = method_exists((string) $class, (string) $method);
+        }
+        else {
+            $isCallable = is_callable($this->routeHandler);
+        }
+        
+        if ($isCallable) {
+            $response = $arrayCallable
+                ? (new $class)->$method($request)
+                : call_user_func($this->routeHandler, $request);
+            
             $this->assertValidResponse($response, $this->routeName);
             
             return $response;
         }
         
-        return $requestHandler->handle($request);
+        return $handler->handle($request);
     }
 }

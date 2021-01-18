@@ -22,16 +22,16 @@ class ContainerResolver implements ResolverInterface
     /**
      * @inheritDoc
      */
-    public function isResolvable($routeHandler): bool
+    public function isResolvable($value): bool
     {
-        return is_string($routeHandler) && $this->container->has($routeHandler);
+        return is_string($value) && $this->container->has($value);
     }
     
     /**
      * @inheritDoc
      */
-    public function resolve($routeHandler)
+    public function resolve($value)
     {
-        return $this->container->get($routeHandler);
+        return $this->container->get($value);
     }
 }

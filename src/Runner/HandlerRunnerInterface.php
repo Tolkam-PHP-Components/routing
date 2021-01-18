@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tolkam\Routing\Runner\Handler;
+namespace Tolkam\Routing\Runner;
 
 use Psr\Http\Server\MiddlewareInterface;
 

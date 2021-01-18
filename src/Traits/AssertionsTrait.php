@@ -3,7 +3,7 @@
 namespace Tolkam\Routing\Traits;
 
 use Psr\Http\Message\ResponseInterface;
-use Tolkam\Routing\Runner\Handler\HandlerRunnerException;
+use Tolkam\Routing\Runner\HandlerRunnerException;
 
 trait AssertionsTrait
 {
