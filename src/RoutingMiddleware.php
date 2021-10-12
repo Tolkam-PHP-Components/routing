@@ -34,7 +34,7 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     protected array $handlerResolvers = [];
     
     /**
-     * @var \Tolkam\Routing\Runner\HandlerRunnerInterface[]
+     * @var HandlerRunnerInterface[]
      */
     protected array $handlerRunners = [];
     
@@ -44,9 +44,9 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     protected ?EventDispatcherInterface $eventDispatcher = null;
     
     /**
-     * @var Route
+     * @var Route|null
      */
-    protected Route $matchedRoute;
+    protected ?Route $matchedRoute = null;
     
     /**
      * @param RouterContainer $routerContainer
@@ -87,7 +87,7 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     /**
      * Adds handler runner
      *
-     * @param \Tolkam\Routing\Runner\HandlerRunnerInterface $runner
+     * @param HandlerRunnerInterface $runner
      *
      * @return self
      */
@@ -123,13 +123,21 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     }
     
     /**
-     * @inheritDoc
+     * @param ServerRequestInterface  $request
+     * @param RequestHandlerInterface $handler - Not used. The middleware short-circuits
+     *                                         to self and throws on errors.
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     * @throws Exception\NotAcceptedException
+     * @throws Exception\NotAllowedException
+     * @throws Exception\NotFoundException
+     * @throws HandlerRunnerException
      */
     public function process(
         ServerRequestInterface $request,
-        RequestHandlerInterface $requestHandler
+        RequestHandlerInterface $handler
     ): ResponseInterface {
-        $response = null;
         
         if (!$this->hasRoutes()) {
             throw new Exception('No routes defined');
@@ -173,7 +181,7 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     }
     
     /**
-     * Fallback strategy
+     * Fallback runner
      *
      * @param ServerRequestInterface $request
      *
@@ -182,9 +190,13 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        if (!$this->matchedRoute) {
+            throw new Exception('No route matched, nothing to handle');
+        }
+        
         throw new Exception(sprintf(
-            'Handler of "%s" was resolved, but none of the '
-            . 'routing strategies was able to execute it',
+            'Handler for "%s" was resolved, but none of the '
+            . 'runners were able to run it',
             $this->matchedRoute->name
         ));
     }
@@ -197,7 +209,7 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
      *
      * @return array
      */
-    protected function resolveMiddlewares(array $values, string $routeName)
+    protected function resolveMiddlewares(array $values, string $routeName): array
     {
         $resolved = [];
         foreach ($values as $value) {
@@ -232,7 +244,7 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
      *
      * @return array
      */
-    protected function resolveMiddleware($value, string $routeName)
+    protected function resolveMiddleware($value, string $routeName): array
     {
         foreach ($this->middlewareResolvers as $resolver) {
             if ($resolver->isResolvable($value)) {
@@ -248,7 +260,7 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     }
     
     /**
-     * Resolves handler suitable to be ran by the one of registered runners
+     * Resolves handler suitable to be run by the one of registered runners
      *
      * @param        $value
      * @param string $routeName

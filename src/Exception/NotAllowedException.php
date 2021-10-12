@@ -9,7 +9,7 @@ class NotAllowedException extends Exception
      * Allowed verbs
      * @var array
      */
-    protected $allowed = [];
+    protected array $allowed = [];
 
     /**
      * Sets the allowed verbs
@@ -17,7 +17,7 @@ class NotAllowedException extends Exception
      * @param array $allowed
      * @return self
      */
-    public function setAllowed(array $allowed)
+    public function setAllowed(array $allowed): NotAllowedException
     {
         $this->allowed = $allowed;
         return $this;
@@ -28,7 +28,7 @@ class NotAllowedException extends Exception
      *
      * @return array
      */
-    public function getAllowed()
+    public function getAllowed(): array
     {
         return $this->allowed;
     }
