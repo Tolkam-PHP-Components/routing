@@ -248,7 +248,9 @@ class RoutingMiddleware implements RequestHandlerInterface, MiddlewareInterface
     {
         foreach ($this->middlewareResolvers as $resolver) {
             if ($resolver->isResolvable($value)) {
-                return $resolver->resolve($value);
+                $resolved = $resolver->resolve($value);
+                
+                return is_array($resolved) ? $resolved : [$resolved];
             }
         }
         
