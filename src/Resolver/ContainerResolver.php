@@ -10,7 +10,7 @@ class ContainerResolver implements ResolverInterface
      * @var ContainerInterface
      */
     protected ContainerInterface $container;
-    
+
     /**
      * @param ContainerInterface $container
      */
@@ -18,7 +18,7 @@ class ContainerResolver implements ResolverInterface
     {
         $this->container = $container;
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -26,11 +26,11 @@ class ContainerResolver implements ResolverInterface
     {
         return is_string($value) && $this->container->has($value);
     }
-    
+
     /**
      * @inheritDoc
      */
-    public function resolve($value)
+    public function resolve($value): mixed
     {
         return $this->container->get($value);
     }

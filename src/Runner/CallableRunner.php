@@ -5,14 +5,12 @@ namespace Tolkam\Routing\Runner;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Tolkam\Routing\Traits\AssertionsTrait;
-use Tolkam\Routing\Traits\RouteHandlerAwareTrait;
 
-class CallableRunner implements HandlerRunnerInterface
+class CallableRunner implements RunnerInterface
 {
     use RouteHandlerAwareTrait;
     use AssertionsTrait;
-    
+
     /**
      * @inheritDoc
      */
@@ -21,7 +19,7 @@ class CallableRunner implements HandlerRunnerInterface
         RequestHandlerInterface $handler
     ): ResponseInterface {
         $arrayCallable = is_array($this->routeHandler);
-        
+
         if ($arrayCallable) {
             [$class, $method] = $this->routeHandler;
             $isCallable = method_exists((string) $class, (string) $method);
@@ -29,17 +27,17 @@ class CallableRunner implements HandlerRunnerInterface
         else {
             $isCallable = is_callable($this->routeHandler);
         }
-        
+
         if ($isCallable) {
             $response = $arrayCallable
-                ? (new $class)->$method($request)
+                ? (new $class())->$method($request)
                 : call_user_func($this->routeHandler, $request);
-            
+
             $this->assertValidResponse($response, $this->routeName);
-            
+
             return $response;
         }
-        
+
         return $handler->handle($request);
     }
 }

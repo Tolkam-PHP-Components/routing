@@ -4,21 +4,15 @@ namespace Tolkam\Routing\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class BeforeRouteEvent implements RoutingEventInterface
+class BeforeMatchEvent
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    protected ServerRequestInterface $request;
-    
     /**
      * @param ServerRequestInterface $request
      */
-    public function __construct(ServerRequestInterface $request)
+    public function __construct(private readonly ServerRequestInterface $request)
     {
-        $this->request = $request;
     }
-    
+
     /**
      * @return ServerRequestInterface
      */

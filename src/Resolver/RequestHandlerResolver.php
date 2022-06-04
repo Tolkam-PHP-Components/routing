@@ -13,11 +13,11 @@ class RequestHandlerResolver implements ResolverInterface
     {
         return $value instanceof RequestHandlerInterface;
     }
-    
+
     /**
      * @inheritDoc
      */
-    public function resolve($value)
+    public function resolve($value): mixed
     {
         return $value;
     }

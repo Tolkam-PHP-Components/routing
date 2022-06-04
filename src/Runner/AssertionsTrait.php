@@ -1,9 +1,9 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Tolkam\Routing\Traits;
+namespace Tolkam\Routing\Runner;
 
 use Psr\Http\Message\ResponseInterface;
-use Tolkam\Routing\Runner\HandlerRunnerException;
+use RuntimeException;
 
 trait AssertionsTrait
 {
@@ -13,13 +13,13 @@ trait AssertionsTrait
      * @param        $response
      * @param string $routeName
      *
-     * @throws HandlerRunnerException
+     * @throws RuntimeException
      */
-    public function assertValidResponse($response, string $routeName)
+    public function assertValidResponse($response, string $routeName): void
     {
         if (!($response instanceof ResponseInterface)) {
-            throw new HandlerRunnerException(sprintf(
-                'Handler returned value for "%1$s" route must be an instance of %2$s, %3$s returned',
+            throw new RuntimeException(sprintf(
+                'Value returned by runner of "%1$s" route must be an instance of %2$s, %3$s returned',
                 $routeName,
                 ResponseInterface::class,
                 gettype($response)

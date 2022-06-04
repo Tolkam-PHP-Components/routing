@@ -11,17 +11,17 @@ class CallableResolver implements ResolverInterface
     {
         if (is_array($value)) {
             [$class, $method] = $value;
-            
+
             return method_exists((string) $class, (string) $method);
         }
-        
+
         return is_callable($value);
     }
-    
+
     /**
      * @inheritDoc
      */
-    public function resolve($value)
+    public function resolve($value): mixed
     {
         return $value;
     }

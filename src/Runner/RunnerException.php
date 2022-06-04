@@ -4,6 +4,6 @@ namespace Tolkam\Routing\Runner;
 
 use Tolkam\Routing\Exception;
 
-class HandlerRunnerException extends Exception
+class RunnerException extends Exception
 {
 }

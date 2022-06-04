@@ -12,7 +12,7 @@ interface ResolverInterface
      * @return bool
      */
     public function isResolvable($value): bool;
-    
+
     /**
      * Returns resolved object
      *
@@ -20,5 +20,5 @@ interface ResolverInterface
      *
      * @return mixed
      */
-    public function resolve($value);
+    public function resolve($value): mixed;
 }

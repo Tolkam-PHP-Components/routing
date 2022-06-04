@@ -5,14 +5,11 @@ namespace Tolkam\Routing\Runner;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Tolkam\Routing\Traits\AssertionsTrait;
-use Tolkam\Routing\Traits\RouteHandlerAwareTrait;
 
-class RequestHandlerRunner implements HandlerRunnerInterface
+class RequestHandlerRunner implements RunnerInterface
 {
     use RouteHandlerAwareTrait;
-    use AssertionsTrait;
-    
+
     /**
      * @inheritDoc
      */
@@ -20,14 +17,11 @@ class RequestHandlerRunner implements HandlerRunnerInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        
+
         if ($this->routeHandler instanceof RequestHandlerInterface) {
-            $response = $this->routeHandler->handle($request);
-            $this->assertValidResponse($response, $this->routeName);
-            
-            return $response;
+            return $this->routeHandler->handle($request);
         }
-        
+
         return $handler->handle($request);
     }
 }
